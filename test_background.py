@@ -1,9 +1,13 @@
 import glob
 import pickle as pkl
 import numpy as np
-
+from pathlib import Path, PureWindowsPath
+​
+objects_path = Path("test_objects/")
+​
+​
 def pkl_dump(obj_name_list): 
-
+​
     '''
     obj_name_list: 
     list of tuples as (obj, obj_name)
@@ -13,13 +17,17 @@ def pkl_dump(obj_name_list):
     for pair in obj_name_list:
         obj, file_name = pair
         
-        files = glob.glob("test_objects/*.pkl")
+        try:
+            files = glob.glob(objects_path+'/*.pkl')
+        except if not files:
+            PureWindowsPath(objects_path)
+            files = glob.glob(PureWindowsPath+'/*.pkl')
     
         existing_files = [get_file_name(file) for file in files]
-
+​
         if file_name in existing_files:
             return print(f'can"t dump, {file_name} already exists')
-
+​
         with open(f'test_objects/{file_name}.pkl', 'wb') as f:
             pkl.dump(obj, f)
         
@@ -32,13 +40,13 @@ def pkl_load(file_name):
         
     return obj
     
-
+​
 def get_file_name(glob_listing):
     return (glob_listing
             .split('/')[1] #get the file name
             .split('.')[0] #remove .pkl
            )
-
+​
 def load_test_dict():
     files = glob.glob("test_objects/*.pkl")
         
@@ -50,8 +58,8 @@ def load_test_dict():
     
     
 test_dict = load_test_dict()
-
-
+​
+​
 def run_test(obj, name):
     try:
         if type(obj)==np.ndarray:
@@ -66,18 +74,18 @@ def run_test(obj, name):
 def unit_square():
     square = plt.Rectangle((0,0), 1,1, fill=False, color='blue')
     circle = plt.Circle((.5, .5), .5, color='yellow')
-
+​
     fig, ax = plt.subplots()
     ax.add_artist(square)
     ax.add_artist(circle)
-
+​
     #set the axis a little beyond the square
     ax.set_xlim(right=1.5)
     ax.set_ylim(top=1.5)
-
+​
     #make the aspect ratios on dimensions the same
     ax.set_aspect('equal')
-
+​
     #remove the border from the top and right side of the figure
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
@@ -85,3 +93,13 @@ def unit_square():
     plt.show()
     
     return
+Collapse
+
+
+
+
+
+
+
+
+
