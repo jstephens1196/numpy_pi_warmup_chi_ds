@@ -93,13 +93,3 @@ def unit_square():
     plt.show()
     
     return
-Collapse
-
-
-
-
-
-
-
-
-
